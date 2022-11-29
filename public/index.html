@@ -5,8 +5,80 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js">
+    </script>
+    <script src="/js/script.js" defer></script>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    
+    <div id="posts">
+
+    </div>
 </body>
+<script>
+
+    const addReply =async(e,obj) =>{
+        e.preventDefault();
+        const inputNode=obj.parentElement.children[0];
+        const type = inputNode.getAttribute('name')
+        const content = inputNode.value;
+        const id = inputNode.getAttribute('id');
+        const data = await axios.post('http://localhost:3000/add-comment',{type,id,content});
+        location.reload();
+    }
+
+    const getData = async () =>{
+        let data= await axios.get('http://localhost:3000/post-data');
+        return data.data;
+    }
+
+    const replyFunction = (obj)=>{
+        const name=obj.parentElement.getAttribute('name');
+        const id=obj.parentElement.getAttribute('id');
+        obj.insertAdjacentHTML('afterEnd',`<form><input name='${name}' id='${id}'><input type='submit' value='submit' onclick='addReply(event,this)'></form>`)
+    }
+
+
+    const createComment = (replies,type,id)=>{
+        let comments=document.createElement('ul');
+        comments.setAttribute("id",id);
+        comments.setAttribute("name",type);
+        for(let i=0;i<replies.length;i++)
+        {
+            let c=document.createElement('li');
+            c.setAttribute("id",replies[i].id);
+            c.setAttribute("name","comment");
+            c.innerText=replies[i].comment;
+            let replyLink= document.createElement('a');
+            replyLink.innerText="  reply";
+            replyLink.setAttribute("onclick","replyFunction(this)");
+            c.insertAdjacentElement('beforeend',replyLink);
+            if(replies[i].replies && replies[i].replies.length>0)
+            c.insertAdjacentElement('beforeend',createComment(replies[i].replies,"comment",replies[i].id));
+            comments.insertAdjacentElement('beforeend',c);
+        }
+        return comments;
+    }
+    (async () =>{
+        let data =await getData();
+        let PostDiv = document.getElementById('posts');
+        data.forEach(post=>{
+            let replyLink=document.createElement('a');
+            replyLink.innerText = " reply";
+            replyLink.setAttribute("onclick","replyFunction(this)");
+
+            let element=document.createElement('div');
+            element.setAttribute("name","post"); 
+            element.setAttribute("id",post.id); 
+
+            let content=document.createElement('h2');
+            content.innerText=post.content;
+            let comment = createComment(post.comments,"post",post.id)
+            element.insertAdjacentElement('beforeend',content);
+            element.insertAdjacentElement('beforeend',replyLink);
+            element.insertAdjacentElement('beforeend',comment);
+            PostDiv.insertAdjacentElement('beforeend',element);
+        })
+    }) ();
+</script>
 </html>

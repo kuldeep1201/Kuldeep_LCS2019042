@@ -1,15 +1,1 @@
-[
-    {
-        "id":1,
-        "comment":"nice post",
-        "replies":[2]
-    },{
-        "id":2,
-        "comment":"yeah this post is really good",
-        "replies":[]
-    },{
-        "id":3,
-        "comment":"i love this post",
-        "replies":[]
-    }
-]
+[{"id":1,"comment":"nice post","replies":[2]},{"id":2,"comment":"yeah this post is really good","replies":[]},{"id":3,"comment":"i love this post","replies":[6]},{"id":4,"comment":"reply test","replies":[]},{"id":5,"comment":"reply test","replies":[]},{"id":6,"comment":"reply test","replies":[8]},{"id":7,"comment":"reply test","replies":[]},{"id":8,"comment":"test comment","replies":[]}]
