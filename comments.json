@@ -1,0 +1,15 @@
+[
+    {
+        "id":1,
+        "comment":"nice post",
+        "replies":[2]
+    },{
+        "id":2,
+        "comment":"yeah this post is really good",
+        "replies":[]
+    },{
+        "id":3,
+        "comment":"i love this post",
+        "replies":[]
+    }
+]
